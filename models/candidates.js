@@ -1,74 +1,35 @@
 const mongoose = require('mongoose');
 
 const candidatesSchema = new mongoose.Schema({
-  nama: {
-    type: String,
-    required: true,
-  },
-  jenisKelamin: {
-    type: String,
-    required: true,
-  },
-  tanggalLahir: {
-    type: Date,
-    required: true,
-  },
-  phone: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  domisili: {
-    type: String,
-    required: true,
-  },
-  pendTerakhir: {
-    type: String,
-    required: true,
-  },
-  univ: {
-    type: String,
-    required: true,
-  },
-  jurusan: {
-    type: String,
-    required: true,
-  },
-  ipk: {
-    type: String,
-    required: true,
-  },
-  perusahaan: {
-    type: String,
-    required: true,
-  },
-  posisiT: {
-    type: String,
-    required: true,
-  },
-  posisi: {
-    type: String,
-    required: true,
-  },
-  sumber: {
-    type: String,
-    required: true,
-  },
-  addedDate: {
-    type: Date,
-    required: true,
-  },
-  hasil: {
-    type: String,
-    default: '',
-  },
-  status: {
-    type: String,
-    required: true,
-  },
+  nama: String,
+  jenisKelamin: String,
+  tanggalLahir: String,
+  phone: String,
+  email: String,
+  domisili: String,
+  pendTerakhir: String,
+  univ: String,
+  jurusan: String,
+  ipk: String,
+  perusahaan: String,
+  posisiT: String,
+  posisi: String,
+  sumber: String,
+  addedDate: String,
+  HCDate: String,
+  pysDate: String,
+  userDate: String,
+  offeringDate: String,
+  MCUDate: String,
+  hasilHC: String,
+  hasilPys: String,
+  hasilUser: String,
+  hasilOffering: String,
+  hasilMCU: String,
+  status: String,
+  doneStatus:String,
+  
+
 }, {collection :'candidates'});
 
 const Candidates = mongoose.model('Candidates', candidatesSchema);
