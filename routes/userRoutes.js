@@ -26,10 +26,13 @@ router.get('/show', async(req,res,next)=>{
     const {status, nama, id, addedDate, doneStatus, } = req.query
   try{  
     const filter = {}
+    
     if(status){
       filter.status = status;
     }
-
+    if(id){
+      filter._id = id;
+    }
     const data = await Candidates.find(filter).sort().limit();
     if(data.length === 0){
       res.status(404).json({message:"Gagal Menarik Data"})
