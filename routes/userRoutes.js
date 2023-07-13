@@ -44,6 +44,7 @@ router.get('/show', async(req,res,next)=>{
 })
 
 router.post('/candidates', async (req,res,next)=>{
+  const {id} = req.query;
   const {
     nama,
     jenisKelamin,
@@ -74,6 +75,45 @@ router.post('/candidates', async (req,res,next)=>{
     doneStatus,
   } = req.body
   try{
+
+    if(id){
+      const update = await Candidates.updateOne({_id:id},{
+        $set:{
+          nama,
+          jenisKelamin,
+          tanggalLahir,
+          phone,
+          email,
+          domisili,
+          pendTerakhir,
+          univ,
+          jurusan,
+          ipk,
+          perusahaan,
+          posisiT,
+          posisi,
+          sumber,
+          addedDate,
+          HCDate,
+          pysDate,
+          userDate,
+          offeringDate,
+          MCUDate,
+          hasilHC,
+          hasilPys,
+          hasilUser,
+          hasilOffering,
+          hasilMCU,
+          status,
+          doneStatus,
+        }
+      })
+      if (update.nModified === 0) {
+        return res.status(400).json({ message: 'Gagal memperbarui data' });
+      }
+      return res.json({ message: "Berhasil Update" });
+    }
+
     const insert = await Candidates.create({
     nama,
     jenisKelamin,
