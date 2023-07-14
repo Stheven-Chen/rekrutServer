@@ -24,6 +24,10 @@ router.post('/users/:id/:pass', async (req, res, next) => {
 router.get('/show', async(req,res,next)=>{
 
     const {status, nama, id, addedDate, doneStatus, } = req.query
+    const p = req.query.p || 1
+    const dataPerPage = 1
+    const skip = (p-1)*dataPerPage
+
   try{  
     const filter = {}
     
@@ -33,11 +37,19 @@ router.get('/show', async(req,res,next)=>{
     if(id){
       filter._id = id;
     }
-    const data = await Candidates.find(filter).sort().limit();
+
+    const count = await Candidates.estimatedDocumentCount(filter);
+    const data = await Candidates
+    .find(filter)
+    .sort({nama:1})
+    .skip(skip)
+    .limit(dataPerPage);
     if(data.length === 0){
       res.status(404).json({message:"Gagal Menarik Data"})
     }
-    res.json(data)
+    const pageCount = count/dataPerPage
+    res.json([data, pageCount])
+    
   }catch(err){
     next(err)
   }

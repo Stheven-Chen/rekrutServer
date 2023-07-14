@@ -27,7 +27,12 @@ const candidatesSchema = new mongoose.Schema({
   hasilOffering: String,
   hasilMCU: String,
   status: String,
-  doneStatus:String,
+  HCStatus:String,
+  userStatus:String,
+  pysStatus:String,
+  offeringstatus:String,
+  mcuStatus:String,
+  lokasi:String,
   
 
 }, {collection :'candidates'});
