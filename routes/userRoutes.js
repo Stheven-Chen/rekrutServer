@@ -25,7 +25,7 @@ router.get('/show', async(req,res,next)=>{
 
     const {status, nama, id, addedDate, doneStatus, } = req.query
     const p = req.query.p || 1
-    const dataPerPage = 1
+    const dataPerPage = 12
     const skip = (p-1)*dataPerPage
 
   try{  
