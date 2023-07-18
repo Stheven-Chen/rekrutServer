@@ -3,6 +3,9 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/user');
 const Candidates = require('../models/candidates');
+const Uuid = require('../models/uuid');
+const crypto = require('crypto');
+
 
 router.post('/users/:id/:pass', async (req, res, next) => {
   const userId = req.params.id;
@@ -20,6 +23,122 @@ router.post('/users/:id/:pass', async (req, res, next) => {
     next(err);
   }
 });
+
+router.get('/generate', async(req,res, next)=>{
+  const uniq = () =>{
+    return crypto.randomUUID()
+  }
+  try{
+    const kode = uniq()
+    const body = {
+      uuid : kode,
+      status:0
+    }
+    const insertUUID = await Uuid.create(body)
+    if(!insertUUID){
+      res.status(400).json({message:"Gagal Membuat UUID Baru"})
+    }    
+    res.json({UUID:kode})
+  }catch(e){
+    next(e)
+  }
+})
+
+router.post('/client/:uuid', async(req, res, next)=>{
+  try{
+    const {uuid} = req.params
+    const {
+      nama,
+      jenisKelamin,
+      tanggalLahir,
+      phone,
+      email,
+      domisili,
+      pendTerakhir,
+      univ,
+      jurusan,
+      ipk,
+      perusahaan,
+      posisiT,
+      posisi,
+      sumber,
+      addedDate,
+      HCDate,
+      pysDate,
+      userDate,
+      offeringDate,
+      MCUDate,
+      hasilHC,
+      hasilPys,
+      hasilUser,
+      hasilOffering,
+      hasilMCU,
+      status,
+      HCStatus,
+      userStatus,
+      pysStatus,
+      offeringstatus,
+      mcuStatus,
+      lokasi,
+      } = req.body
+    const checkUUID = await Uuid.findOne({uuid})
+    if(checkUUID.status===0){
+      const updateUUID = await Uuid.updateOne({uuid},{
+        $set:{status:1}
+      })
+      if(updateUUID.nModified !== 0){
+        const insertData = await Candidates.create(
+          {
+          nama,
+          jenisKelamin,
+          tanggalLahir,
+          phone,
+          email,
+          domisili,
+          pendTerakhir,
+          univ,
+          jurusan,
+          ipk,
+          perusahaan,
+          posisiT,
+          posisi,
+          sumber,
+          addedDate,
+          HCDate,
+          pysDate,
+          userDate,
+          offeringDate,
+          MCUDate,
+          hasilHC,
+          hasilPys,
+          hasilUser,
+          hasilOffering,
+          hasilMCU,
+          status,
+          HCStatus,
+          userStatus,
+          pysStatus,
+          offeringstatus,
+          mcuStatus,
+          lokasi,
+          }
+        )
+        if(insertData.nModified === 0){
+          res.status(500).json({message:"Gagal Insert Data"})
+        }
+        res.json("Sukses Insert Data")
+      }
+    }else{
+      res.status(401).json("UUID Tidak Valid")
+
+    }
+
+   
+
+  }catch(e){
+    next(e)
+  }
+})
 
 router.get('/show', async(req,res,next)=>{
 
